@@ -1,50 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MOS BURGER - Items</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
   <style>
-    /* Ensure all cards are same size */
-    .card {
+    body { background: #f8f9fa; }
+
+    /* Card sizing + hover */
+    .menu-card {
       height: 100%;
       display: flex;
       flex-direction: column;
+      transition: transform .25s ease, box-shadow .25s ease;
+      border: 1px solid rgba(0,0,0,.06);
     }
-    .card img {
+    .menu-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 22px rgba(0,0,0,.15);
+    }
+    .menu-card img {
       height: 180px;
       object-fit: cover;
     }
-    .card-body {
-      flex-grow: 1;
+    .menu-card .card-body {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
     }
-    .card .btn {
+    .menu-card .price {
+      color: #0065F8;
+      font-weight: 700;
+      margin: 0;
+    }
+    .menu-card .btn {
       margin-top: auto;
+    }
+
+    /* Quantity control */
+    .quantity-control {
+      display: flex; align-items: center; justify-content: center; gap: .5rem;
+    }
+    .quantity-control button {
+      width: 32px; height: 32px; border-radius: 50%; border: none;
+      background: #4300FF; color: #fff; font-weight: 700; line-height: 32px;
+    }
+    .quantity-control .qty {
+      min-width: 22px; text-align: center; font-weight: 700;
+    }
+
+    /* Badges */
+    .item-badge {
+      position: absolute; top: 10px; left: 10px;
+      font-size: .8rem;
     }
   </style>
 </head>
 <body>
   <!-- Navbar -->
-  <header class="navbar navbar-expand-lg navbar-dark" style="background-color:#4300FF;">
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#4300FF;">
     <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">MOS BURGER</a>
-      <div class="collapse navbar-collapse">
+      <a class="navbar-brand fw-bold" href="index.html">MOS BURGER</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="nav" class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact Us</a></li>
         </ul>
+        <a href="checkout.html" class="btn btn-warning ms-3">
+          🛒 Cart <span id="cart-count" class="badge bg-dark">0</span>
+        </a>
       </div>
     </div>
-  </header>
+  </nav>
 
   <div class="container py-5">
     <h2 class="text-center mb-4 text-primary">Our Menu</h2>
 
     <!-- Tabs -->
-    <ul class="nav nav-tabs justify-content-center mb-4" id="menuTabs" role="tablist">
+    <ul class="nav nav-tabs justify-content-center mb-4" role="tablist">
       <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#all">All</a></li>
       <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#burgers">Burgers</a></li>
       <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#sides">Sides</a></li>
@@ -53,113 +92,168 @@
     </ul>
 
     <div class="tab-content">
-      <!-- ALL -->
-      <div class="tab-pane fade show active" id="all">
-        <div class="row g-4" id="allItemsRow"></div>
-      </div>
-
-      <!-- Burgers -->
-      <div class="tab-pane fade" id="burgers">
-        <div class="row g-4" id="burgerItemsRow"></div>
-      </div>
-
-      <!-- Sides -->
-      <div class="tab-pane fade" id="sides">
-        <div class="row g-4" id="sideItemsRow"></div>
-      </div>
-
-      <!-- Drinks -->
-      <div class="tab-pane fade" id="drinks">
-        <div class="row g-4" id="drinkItemsRow"></div>
-      </div>
-
-      <!-- Desserts -->
-      <div class="tab-pane fade" id="desserts">
-        <div class="row g-4" id="dessertItemsRow"></div>
-      </div>
+      <div class="tab-pane fade show active" id="all"><div class="row g-4" id="allItemsRow"></div></div>
+      <div class="tab-pane fade" id="burgers"><div class="row g-4" id="burgerItemsRow"></div></div>
+      <div class="tab-pane fade" id="sides"><div class="row g-4" id="sideItemsRow"></div></div>
+      <div class="tab-pane fade" id="drinks"><div class="row g-4" id="drinkItemsRow"></div></div>
+      <div class="tab-pane fade" id="desserts"><div class="row g-4" id="dessertItemsRow"></div></div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Define items for each category with Rs. prices
+    // ====== DATA (your exact items, same image paths + numeric prices) ======
     const burgers = [
-      {img:"IMG/classic burger.png", name:"Classic Burger", price:"Rs. 1990"},
-      {img:"IMG/cheese burger.webp", name:"Cheese Burger", price:"Rs. 2250"},
-      {img:"IMG/bacon burger.avif", name:"Bacon Burger", price:"Rs. 2490"},
-      {img:"IMG/veggie burger.jpg", name:"Veggie Burger", price:"Rs. 1850"},
-      {img:"IMG/Double-Cheeseburger.webp", name:"Double Cheese", price:"Rs. 2390"},
-      {img:"IMG/Mushroom burger.jpg", name:"Mushroom Burger", price:"Rs. 2100"},
-      {img:"IMG/spicy burger.jpeg", name:"Spicy Burger", price:"Rs. 2300"},
-      {img:"IMG/bbq burger.webp", name:"BBQ Burger", price:"Rs. 2500"},
-      {img:"IMG/chicken burger.jpg", name:"Chicken Burger", price:"Rs. 1900"},
-      {img:"IMG/spicy burger.jpeg", name:"Special Burger", price:"Rs. 2700"}
+      {img:"IMG/classic burger.png", name:"Classic Burger", price:1990, badge:"Best Seller"},
+      {img:"IMG/cheese burger.webp", name:"Cheese Burger", price:2250},
+      {img:"IMG/bacon burger.avif", name:"Bacon Burger", price:2490},
+      {img:"IMG/veggie burger.jpg", name:"Veggie Burger", price:1850, badge:"New"},
+      {img:"IMG/Double-Cheeseburger.webp", name:"Double Cheese", price:2390},
+      {img:"IMG/Mushroom burger.jpg", name:"Mushroom Burger", price:2100},
+      {img:"IMG/spicy burger.jpeg", name:"Spicy Burger", price:2300, badge:"Spicy"},
+      {img:"IMG/bbq burger.webp", name:"BBQ Burger", price:2500},
+      {img:"IMG/chicken burger.jpg", name:"Chicken Burger", price:1900},
+      {img:"IMG/spicy burger.jpeg", name:"Special Burger", price:2700}
     ];
 
     const sides = [
-      {img:"IMG/french fries.avif", name:"French Fries", price:"Rs. 890"},
-      {img:"IMG/onion rings.jpeg", name:"Onion Rings", price:"Rs. 950"},
-      {img:"IMG/cheese sticks.jpg", name:"Cheese Sticks", price:"Rs. 1050"},
-      {img:"IMG/chicken nuggets.jpg", name:"Chicken Nuggets", price:"Rs. 1200"},
-      {img:"IMG/potato wedges.jpeg", name:"Potato Wedges", price:"Rs. 940"},
-      {img:"IMG/Garlic-Bread.webp", name:"Garlic Bread", price:"Rs. 880"},
-      {img:"IMG/mazzaralla balls.jpg", name:"Mozzarella Balls", price:"Rs. 1350"},
-      {img:"IMG/corn.jpg", name:"Corn on Cob", price:"Rs. 890"},
-      {img:"IMG/salad bawl.jpeg", name:"Salad Bowl", price:"Rs. 1100"},
-      {img:"IMG/chicken wings.jpg", name:"Chicken Wings", price:"Rs. 1500"}
+      {img:"IMG/french fries.avif", name:"French Fries", price:890},
+      {img:"IMG/onion rings.jpeg", name:"Onion Rings", price:950},
+      {img:"IMG/cheese sticks.jpg", name:"Cheese Sticks", price:1050},
+      {img:"IMG/chicken nuggets.jpg", name:"Chicken Nuggets", price:1200, badge:"Best Seller"},
+      {img:"IMG/potato wedges.jpeg", name:"Potato Wedges", price:940},
+      {img:"IMG/Garlic-Bread.webp", name:"Garlic Bread", price:880},
+      {img:"IMG/mazzaralla balls.jpg", name:"Mozzarella Balls", price:1350},
+      {img:"IMG/corn.jpg", name:"Corn on Cob", price:890},
+      {img:"IMG/salad bawl.jpeg", name:"Salad Bowl", price:1100},
+      {img:"IMG/chicken wings.jpg", name:"Chicken Wings", price:1500}
     ];
 
     const drinks = [
-      {img:"IMG/cola.jpg", name:"Cola", price:"Rs. 450"},
-      {img:"IMG/orange juice.jpeg", name:"Orange Juice", price:"Rs. 600"},
-      {img:"IMG/lemonade.jpeg", name:"Lemonade", price:"Rs. 550"},
-      {img:"IMG/milkshake.webp", name:"Milkshake", price:"Rs. 900"},
-      {img:"IMG/iced tea.jpg", name:"Iced Tea", price:"Rs. 500"},
-      {img:"IMG/coffee.jpeg", name:"Coffee", price:"Rs. 700"},
-      {img:"IMG/green tea.jpg", name:"Green Tea", price:"Rs. 600"},
-      {img:"IMG/smoothy.jpg", name:"Smoothie", price:"Rs. 1000"},
-      {img:"IMG/water.jpeg", name:"Water Bottle", price:"Rs. 250"},
-      {img:"IMG/energy drink.jpeg", name:"Energy Drink", price:"Rs. 750"}
+      {img:"IMG/cola.jpg", name:"Cola", price:450},
+      {img:"IMG/orange juice.jpeg", name:"Orange Juice", price:600},
+      {img:"IMG/lemonade.jpeg", name:"Lemonade", price:550},
+      {img:"IMG/milkshake.webp", name:"Milkshake", price:900, badge:"Best Seller"},
+      {img:"IMG/iced tea.jpg", name:"Iced Tea", price:500},
+      {img:"IMG/coffee.jpeg", name:"Coffee", price:700},
+      {img:"IMG/green tea.jpg", name:"Green Tea", price:600},
+      {img:"IMG/smoothy.jpg", name:"Smoothie", price:1000},
+      {img:"IMG/water.jpeg", name:"Water Bottle", price:250},
+      {img:"IMG/energy drink.jpeg", name:"Energy Drink", price:750}
     ];
 
     const desserts = [
-      {img:"IMG/ice cream.jpg", name:"Ice Cream", price:"Rs. 800"},
-      {img:"IMG/donuts.webp", name:"Donuts", price:"Rs. 750"},
-      {img:"IMG/chocolate cake.webp", name:"Chocolate Cake", price:"Rs. 1400"},
-      {img:"IMG/brownies.jpg", name:"Brownies", price:"Rs. 1200"},
-      {img:"IMG/cup cake.jpg", name:"Cupcake", price:"Rs. 700"},
-      {img:"IMG/apple pie.webp", name:"Apple Pie", price:"Rs. 950"},
-      {img:"IMG/cheesecake.webp", name:"Cheesecake", price:"Rs. 1600"},
-      {img:"IMG/pudding.jpg", name:"Pudding", price:"Rs. 850"},
-      {img:"IMG/Macarons.jpg", name:"Macarons", price:"Rs. 1100"},
-      {img:"IMG/tiramisu.jpeg", name:"Tiramisu", price:"Rs. 1350"}
+      {img:"IMG/ice cream.jpg", name:"Ice Cream", price:800},
+      {img:"IMG/donuts.webp", name:"Donuts", price:750},
+      {img:"IMG/chocolate cake.webp", name:"Chocolate Cake", price:1400},
+      {img:"IMG/brownies.jpg", name:"Brownies", price:1200},
+      {img:"IMG/cup cake.jpg", name:"Cupcake", price:700, badge:"New"},
+      {img:"IMG/apple pie.webp", name:"Apple Pie", price:950},
+      {img:"IMG/cheesecake.webp", name:"Cheesecake", price:1600, badge:"Best Seller"},
+      {img:"IMG/pudding.jpg", name:"Pudding", price:850},
+      {img:"IMG/Macarons.jpg", name:"Macarons", price:1100},
+      {img:"IMG/tiramisu.jpeg", name:"Tiramisu", price:1350}
     ];
 
-    const allItems = [...burgers, ...sides, ...drinks, ...desserts];
+    // Build "all" meta so Add to Cart knows original category
+    const allMeta = [
+      ...burgers.map((item, i) => ({category: 'burgers', index: i, item})),
+      ...sides.map((item, i)   => ({category: 'sides', index: i, item})),
+      ...drinks.map((item, i)  => ({category: 'drinks', index: i, item})),
+      ...desserts.map((item,i) => ({category: 'desserts', index:i, item}))
+    ];
 
-    // Function to render items
-    function renderItems(items, containerSelector){
-      const container = document.querySelector(containerSelector);
-      container.innerHTML = items.map(item => `
-        <div class="col-md-3 d-flex">
-          <div class="card flex-fill">
+    const dataMap = { burgers, sides, drinks, desserts };
+
+    // ====== RENDERING ======
+    function cardHTML(item, key, scope) {
+      const qtyId = `qty-${key}-${scope}`;
+      return `
+        <div class="col-sm-6 col-md-4 col-lg-3 d-flex">
+          <div class="card menu-card w-100 position-relative">
+            ${item.badge ? `<span class="badge bg-danger item-badge">${item.badge}</span>` : ''}
             <img src="${item.img}" class="card-img-top" alt="${item.name}">
             <div class="card-body text-center">
-              <h5 class="card-title">${item.name}</h5>
-              <p class="card-text fw-bold text-success">${item.price}</p>
-              <button class="btn btn-warning">Add to Cart</button>
+              <h6 class="card-title mb-1">${item.name}</h6>
+              <p class="price">Rs.${item.price}</p>
+
+              <div class="quantity-control">
+                <button type="button" onclick="changeQty('${qtyId}', -1)">-</button>
+                <span class="qty" id="${qtyId}">1</span>
+                <button type="button" onclick="changeQty('${qtyId}', 1)">+</button>
+              </div>
+
+              <button class="btn btn-success w-100"
+                onclick="addToCart('${key}', '${scope}')">Add to Cart</button>
             </div>
           </div>
         </div>
-      `).join('');
+      `;
     }
 
-    // Render items for each tab
-    renderItems(allItems, "#allItemsRow");
-    renderItems(burgers, "#burgerItemsRow");
-    renderItems(sides, "#sideItemsRow");
-    renderItems(drinks, "#drinkItemsRow");
-    renderItems(desserts, "#dessertItemsRow");
+    function renderCategory(items, containerId, scopePrefix) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = items.map((item, i) => {
+        const key = `${scopePrefix}-${i}`; // unique key for qty ids
+        return cardHTML(item, key, 'cat');
+      }).join('');
+    }
+
+    function renderAll(containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = allMeta.map((meta, i) => {
+        const key = `all-${meta.category}-${meta.index}`;
+        return cardHTML(meta.item, key, 'all');
+      }).join('');
+    }
+
+    // ====== QTY & CART ======
+    function changeQty(qtyId, delta) {
+      const el = document.getElementById(qtyId);
+      let val = parseInt(el.textContent, 10) || 1;
+      val = Math.max(1, val + delta);
+      el.textContent = val;
+    }
+
+    function addToCart(key, scope) {
+      // key is like "burgers-0" (category scope) or "all-burgers-0" (all scope)
+      let item;
+      if (key.startsWith('all-')) {
+        const [, cat, idxStr] = key.split('-');
+        item = dataMap[cat][parseInt(idxStr, 10)];
+      } else {
+        const [cat, idxStr] = key.split('-');
+        item = dataMap[cat][parseInt(idxStr, 10)];
+      }
+
+      const qtyEl = document.getElementById(`qty-${key}-${scope}`);
+      const qty = parseInt(qtyEl?.textContent || '1', 10);
+
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      // Push one entry per quantity (keeps your existing checkout working)
+      for (let i = 0; i < qty; i++) {
+        cart.push({ name: item.name, price: item.price, img: item.img });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      alert(`${qty} x ${item.name} added to cart`);
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      document.getElementById('cart-count').textContent = cart.length;
+    }
+
+    // ====== INIT ======
+    document.addEventListener('DOMContentLoaded', () => {
+      renderAll('allItemsRow');
+      renderCategory(burgers, 'burgerItemsRow', 'burgers');
+      renderCategory(sides, 'sideItemsRow', 'sides');
+      renderCategory(drinks, 'drinkItemsRow', 'drinks');
+      renderCategory(desserts, 'dessertItemsRow', 'desserts');
+      updateCartCount();
+    });
   </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
