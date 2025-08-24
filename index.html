@@ -8,31 +8,58 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Navbar -->
-  <header class="navbar navbar-expand-lg navbar-dark" style="background-color:#4300FF;">
-    <div class="container-fluid">
-      <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="IMG/ChatGPT Image Jun 12, 2025, 03_26_20 PM.png" alt="MOS BURGER" height="40" class="me-2">
-        MOS BURGER
-      </a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
-          <li class="nav-item"><a class="btn btn-warning" href="login.html">Login</a></li>
-        </ul>
-      </div>
+ <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">Mos Burger</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login.html">Menu</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login.html">Checkout</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.html">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contact.html">Contact Us</a>
+        </li>
+      </ul>
     </div>
-  </header>
+  </div>
+</nav>
 
   <!-- Hero Section -->
   <section class="home-hero d-flex justify-content-center align-items-center">
     <div class="text-center text-white">
       <h1>Welcome to MOS BURGER 🍔</h1>
       <p class="lead">Delicious burgers, sides, and drinks just for you!</p>
-      <a href="loging.html" class="btn btn-lg btn-warning mt-3">Order Now</a>
+      <a href="login.html" class="btn btn-lg btn-warning mt-3">Order Now</a>
     </div>
   </section>
+
+  <script>
+  function login(event) {
+    event.preventDefault();
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    // Demo credentials (can later connect to backend/db)
+    if (username === "admin" && password === "1234") {
+      sessionStorage.setItem("isLoggedIn", "true");
+      window.location.href = "items.html"; // redirect to menu
+    } else {
+      alert("Invalid username or password!");
+    }
+  }
+</script>
+
 </body>
 </html>
