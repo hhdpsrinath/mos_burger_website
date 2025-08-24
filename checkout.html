@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - MOS BURGER</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: url('images/checkout-bg.jpg') no-repeat center center/cover;
+      min-height: 100vh;
+    }
+    .checkout-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 900px;
+    }
+    .empty-cart {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #555;
+      padding: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0065F8;">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">MOS BURGER</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+        </ul>
+        <a href="checkout.html" class="btn btn-warning ms-3">🛒 Cart</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="d-flex justify-content-center align-items-start mt-5">
+    <div class="checkout-container">
+      <h2 class="text-center mb-4 text-primary">Checkout</h2>
+
+      <table class="table table-bordered text-center">
+        <thead class="table-primary">
+          <tr>
+            <th>Item</th>
+            <th>Price (Rs.)</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="cartTable"></tbody>
+      </table>
+
+      <h4 class="text-end">Total: Rs. <span id="cartTotal">0</span></h4>
+
+      <div class="text-end mt-3">
+        <button class="btn btn-success" onclick="placeOrder()">Place Order</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartTable = document.getElementById("cartTable");
+    const cartTotal = document.getElementById("cartTotal");
+
+    function renderCart() {
+      cartTable.innerHTML = "";
+      if(cart.length === 0){
+        cartTable.innerHTML = `<tr><td colspan="3" class="empty-cart">Your cart is empty.</td></tr>`;
+        cartTotal.textContent = "0";
+        return;
+      }
+
+      let total = 0;
+      cart.forEach((item, index) => {
+        total += item.price;
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${item.name}</td>
+          <td>Rs. ${item.price}</td>
+          <td><button class="btn btn-danger btn-sm" onclick="removeItem(${index})">Remove</button></td>
+        `;
+        cartTable.appendChild(row);
+      });
+      cartTotal.textContent = total;
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    function placeOrder() {
+      if(cart.length === 0){
+        alert("Your cart is empty!");
+        return;
+      }
+      const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+      alert(`✅ Order placed successfully! Total: Rs. ${totalPrice}`);
+      cart = [];
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    renderCart();
+  </script>
+</body>
+</html>
