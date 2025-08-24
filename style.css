@@ -1,0 +1,121 @@
+/* Color Scheme */
+:root {
+  --primary: #4300FF;
+  --secondary: #0065F8;
+  --accent: #00CAFF;
+  --highlight: #00FFDE;
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--primary);
+  padding: 10px 20px;
+  color: white;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 40px;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-btn {
+  background: var(--highlight);
+  padding: 6px 12px;
+  border-radius: 5px;
+  color: black !important;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, var(--secondary), var(--accent));
+  color: white;
+}
+
+/* Login Form */
+/* Login page background */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  background-image: url("IMG/intro-1737759996.jpg"); /* ← Local image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  backdrop-filter: brightness(0.6); /* optional: darkens bg */
+}
+
+
+.login-form {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.login-form h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--primary);
+}
+
+.login-form label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 2px solid var(--secondary);
+  border-radius: 5px;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 10px;
+  background: var(--secondary);
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background: var(--primary);
+}
