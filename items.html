@@ -6,6 +6,24 @@
   <title>MOS BURGER - Items</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Ensure all cards are same size */
+    .card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .card img {
+      height: 180px;
+      object-fit: cover;
+    }
+    .card-body {
+      flex-grow: 1;
+    }
+    .card .btn {
+      margin-top: auto;
+    }
+  </style>
 </head>
 <body>
   <!-- Navbar -->
@@ -34,57 +52,114 @@
       <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#desserts">Desserts</a></li>
     </ul>
 
-    <!-- Tab Content -->
     <div class="tab-content">
-      
-      <!-- All Items -->
+      <!-- ALL -->
       <div class="tab-pane fade show active" id="all">
-        <div class="row g-4">
-          <div class="col-md-3">
-            <div class="card">
-              <img src="assets/burger1.jpg" class="card-img-top" alt="Classic Burger">
-              <div class="card-body text-center">
-                <h5 class="card-title">Classic Burger</h5>
-                <p class="card-text">$5.99</p>
-                <button class="btn btn-warning">Add to Cart</button>
-              </div>
-            </div>
-          </div>
-          <!-- Repeat cards here for all items -->
-        </div>
+        <div class="row g-4" id="allItemsRow"></div>
       </div>
 
       <!-- Burgers -->
       <div class="tab-pane fade" id="burgers">
-        <div class="row g-4">
-          <!-- Burger items only -->
-        </div>
+        <div class="row g-4" id="burgerItemsRow"></div>
       </div>
 
       <!-- Sides -->
       <div class="tab-pane fade" id="sides">
-        <div class="row g-4">
-          <!-- Fries, nuggets etc -->
-        </div>
+        <div class="row g-4" id="sideItemsRow"></div>
       </div>
 
       <!-- Drinks -->
       <div class="tab-pane fade" id="drinks">
-        <div class="row g-4">
-          <!-- Drinks only -->
-        </div>
+        <div class="row g-4" id="drinkItemsRow"></div>
       </div>
 
       <!-- Desserts -->
       <div class="tab-pane fade" id="desserts">
-        <div class="row g-4">
-          <!-- Ice cream, donuts etc -->
-        </div>
+        <div class="row g-4" id="dessertItemsRow"></div>
       </div>
-
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Define items for each category with Rs. prices
+    const burgers = [
+      {img:"IMG/classic burger.png", name:"Classic Burger", price:"Rs. 1990"},
+      {img:"IMG/cheese burger.webp", name:"Cheese Burger", price:"Rs. 2250"},
+      {img:"IMG/bacon burger.avif", name:"Bacon Burger", price:"Rs. 2490"},
+      {img:"IMG/veggie burger.jpg", name:"Veggie Burger", price:"Rs. 1850"},
+      {img:"IMG/Double-Cheeseburger.webp", name:"Double Cheese", price:"Rs. 2390"},
+      {img:"IMG/Mushroom burger.jpg", name:"Mushroom Burger", price:"Rs. 2100"},
+      {img:"IMG/spicy burger.jpeg", name:"Spicy Burger", price:"Rs. 2300"},
+      {img:"IMG/bbq burger.webp", name:"BBQ Burger", price:"Rs. 2500"},
+      {img:"IMG/chicken burger.jpg", name:"Chicken Burger", price:"Rs. 1900"},
+      {img:"IMG/spicy burger.jpeg", name:"Special Burger", price:"Rs. 2700"}
+    ];
+
+    const sides = [
+      {img:"IMG/french fries.avif", name:"French Fries", price:"Rs. 890"},
+      {img:"IMG/onion rings.jpeg", name:"Onion Rings", price:"Rs. 950"},
+      {img:"IMG/cheese sticks.jpg", name:"Cheese Sticks", price:"Rs. 1050"},
+      {img:"IMG/chicken nuggets.jpg", name:"Chicken Nuggets", price:"Rs. 1200"},
+      {img:"IMG/potato wedges.jpeg", name:"Potato Wedges", price:"Rs. 940"},
+      {img:"IMG/Garlic-Bread.webp", name:"Garlic Bread", price:"Rs. 880"},
+      {img:"IMG/mazzaralla balls.jpg", name:"Mozzarella Balls", price:"Rs. 1350"},
+      {img:"IMG/corn.jpg", name:"Corn on Cob", price:"Rs. 890"},
+      {img:"IMG/salad bawl.jpeg", name:"Salad Bowl", price:"Rs. 1100"},
+      {img:"IMG/chicken wings.jpg", name:"Chicken Wings", price:"Rs. 1500"}
+    ];
+
+    const drinks = [
+      {img:"IMG/cola.jpg", name:"Cola", price:"Rs. 450"},
+      {img:"IMG/orange juice.jpeg", name:"Orange Juice", price:"Rs. 600"},
+      {img:"IMG/lemonade.jpeg", name:"Lemonade", price:"Rs. 550"},
+      {img:"IMG/milkshake.webp", name:"Milkshake", price:"Rs. 900"},
+      {img:"IMG/iced tea.jpg", name:"Iced Tea", price:"Rs. 500"},
+      {img:"IMG/coffee.jpeg", name:"Coffee", price:"Rs. 700"},
+      {img:"IMG/green tea.jpg", name:"Green Tea", price:"Rs. 600"},
+      {img:"IMG/smoothy.jpg", name:"Smoothie", price:"Rs. 1000"},
+      {img:"IMG/water.jpeg", name:"Water Bottle", price:"Rs. 250"},
+      {img:"IMG/energy drink.jpeg", name:"Energy Drink", price:"Rs. 750"}
+    ];
+
+    const desserts = [
+      {img:"IMG/ice cream.jpg", name:"Ice Cream", price:"Rs. 800"},
+      {img:"IMG/donuts.webp", name:"Donuts", price:"Rs. 750"},
+      {img:"IMG/chocolate cake.webp", name:"Chocolate Cake", price:"Rs. 1400"},
+      {img:"IMG/brownies.jpg", name:"Brownies", price:"Rs. 1200"},
+      {img:"IMG/cup cake.jpg", name:"Cupcake", price:"Rs. 700"},
+      {img:"IMG/apple pie.webp", name:"Apple Pie", price:"Rs. 950"},
+      {img:"IMG/cheesecake.webp", name:"Cheesecake", price:"Rs. 1600"},
+      {img:"IMG/pudding.jpg", name:"Pudding", price:"Rs. 850"},
+      {img:"IMG/Macarons.jpg", name:"Macarons", price:"Rs. 1100"},
+      {img:"IMG/tiramisu.jpeg", name:"Tiramisu", price:"Rs. 1350"}
+    ];
+
+    const allItems = [...burgers, ...sides, ...drinks, ...desserts];
+
+    // Function to render items
+    function renderItems(items, containerSelector){
+      const container = document.querySelector(containerSelector);
+      container.innerHTML = items.map(item => `
+        <div class="col-md-3 d-flex">
+          <div class="card flex-fill">
+            <img src="${item.img}" class="card-img-top" alt="${item.name}">
+            <div class="card-body text-center">
+              <h5 class="card-title">${item.name}</h5>
+              <p class="card-text fw-bold text-success">${item.price}</p>
+              <button class="btn btn-warning">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render items for each tab
+    renderItems(allItems, "#allItemsRow");
+    renderItems(burgers, "#burgerItemsRow");
+    renderItems(sides, "#sideItemsRow");
+    renderItems(drinks, "#drinkItemsRow");
+    renderItems(desserts, "#dessertItemsRow");
+  </script>
 </body>
 </html>
